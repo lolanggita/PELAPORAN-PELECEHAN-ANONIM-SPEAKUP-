@@ -43,8 +43,8 @@
                 @csrf
                 <div>
                     <input type="text" name="kode_tracking" id="kode_tracking" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                           placeholder="SU-A1B2C3">
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="SU-A1B2C3">
                 </div>
                 <button type="submit" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-300 font-medium">
                     Cari
@@ -75,7 +75,7 @@
                     </div>
                     <span class="px-3 py-1 rounded-full text-sm font-medium
                         {{ $laporan->status == 'Menunggu Verifikasi' ? 'bg-yellow-100 text-yellow-800' :
-                           ($laporan->status == 'Diproses' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800') }}">
+                            ($laporan->status == 'Diproses' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800') }}">
                         {{ $laporan->status }}
                     </span>
                 </div>

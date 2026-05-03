@@ -79,6 +79,8 @@ class ReportController extends Controller
             return view('track', compact('laporan'));
         }
 
-        return view('track')->withErrors(['kode_tracking' => 'Kode tracking tidak ditemukan.']);
+        return redirect()->back()->withErrors([
+            'kode_tracking' => 'Kode tracking tidak ditemukan.'
+        ]);
     }
 }
