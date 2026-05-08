@@ -11,7 +11,11 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
+        <testsuite name="Browser">
+            <directory suffix="Test.php">tests/Browser</directory>
+        </testsuite>
     </testsuites>
+
     <source>
         <include>
             <directory>app</directory>
@@ -32,5 +36,11 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
+        <env name="APP_URL" value="http://127.0.0.1:8000"/>
+        <env name="DUSK_DRIVER_URL" value="http://127.0.0.1:9515"/>
     </php>
+</xai:function_call name="edit_file">
+
+<xai:function_call name="edit_file">
+<parameter name="path">WEB-PPKS-ANONIM/phpunit.xml
 </phpunit>

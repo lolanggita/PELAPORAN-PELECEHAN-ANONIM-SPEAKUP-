@@ -1,0 +1,1 @@
+# Task Progress: Create LandingPageTest.php - COMPLETED&#10;&#10;- [x] Step 1: Create TODO.md&#10;- [x] Step 2: Create LandingPageTest.php&#10;- [x] Step 3: Update TODO.md with completion&#10;- [x] Step 4: Provide run command&#10;&#10;File created: tests/Browser/LandingPageTest.php&#10;Ready to run: cd WEB-PPKS-ANONIM && php artisan dusk tests/Browser/LandingPageTest.php
