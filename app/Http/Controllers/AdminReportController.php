@@ -6,6 +6,7 @@ use App\Models\Laporan;
 use App\Models\StatusUpdate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AdminReportController extends Controller
 {
@@ -22,8 +23,10 @@ class AdminReportController extends Controller
         ]);
 
         $laporan = Laporan::findOrFail($id);
-        $oldStatus = $laporan->status;
-        $laporan->update(['status' => $request->status]);
+
+        $laporan->update([
+            'status' => $request->status
+        ]);
 
         // Insert ke status_updates
         StatusUpdate::create([
@@ -33,31 +36,70 @@ class AdminReportController extends Controller
             'tanggal_update' => now(),
         ]);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Status laporan berhasil diperbarui.');
+        return redirect()->route('admin.dashboard')
+            ->with('success', 'Status laporan berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
         $laporan = Laporan::findOrFail($id);
-        
+
         // Hapus bukti terkait
         foreach ($laporan->buktis as $bukti) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($bukti->file_bukti);
+            Storage::disk('public')->delete($bukti->file_bukti);
             $bukti->delete();
         }
-        
+
         // Hapus status updates
         $laporan->statusUpdates()->delete();
-        
+
         // Hapus laporan
         $laporan->delete();
 
-        return redirect()->route('admin.dashboard')->with('success', 'Laporan berhasil dihapus.');
+        return redirect()->route('admin.dashboard')
+            ->with('success', 'Laporan berhasil dihapus.');
     }
 
     public function detail($id)
     {
         $laporan = Laporan::with('buktis')->findOrFail($id);
+
         return response()->json($laporan);
+    }
+
+    // =========================
+    // SAVE NOTES
+    // =========================
+
+    public function saveNote(Request $request, $id)
+    {
+        $request->validate([
+            'notes' => 'nullable|string',
+        ]);
+
+        $laporan = Laporan::findOrFail($id);
+
+        $laporan->update([
+            'notes' => $request->notes
+        ]);
+
+        return redirect()->route('admin.dashboard')
+            ->with('success', 'Catatan laporan berhasil disimpan.');
+    }
+
+    // =========================
+    // DELETE NOTES
+    // =========================
+
+    public function deleteNote($id)
+    {
+        $laporan = Laporan::findOrFail($id);
+
+        $laporan->update([
+            'notes' => null
+        ]);
+
+        return redirect()->route('admin.dashboard')
+            ->with('success', 'Catatan laporan berhasil dihapus.');
     }
 }

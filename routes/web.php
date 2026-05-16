@@ -25,6 +25,8 @@ Route::post('/admin/logout', [App\Http\Controllers\AdminAuthController::class, '
 // Routes Admin (dengan middleware auth)
 Route::middleware('auth')->group(function () {
     Route::get('/admin/dashboard', [AdminReportController::class, 'dashboard'])->name('admin.dashboard');
+    Route::put('/admin/reports/{id}/notes', [AdminReportController::class, 'saveNote'])->name('admin.reports.saveNote');
+    Route::delete('/admin/reports/{id}/notes', [AdminReportController::class, 'deleteNote'])->name('admin.reports.deleteNote');
     Route::get('/admin/customer-service', [ChatController::class, 'index'])->name('admin.chat.index');
     Route::get('/admin/chat/sessions', [ChatController::class, 'sessions'])->name('admin.chat.sessions');
     Route::get('/admin/chat/messages', [ChatController::class, 'getMessages'])->name('admin.chat.messages');
