@@ -30,6 +30,13 @@
                     <span>Manajemen Laporan</span>
                 </a>
 
+                <a href="{{ route('admin.chat.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-3 text-indigo-200 hover:bg-white/10 hover:text-white transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"/>
+                    </svg>
+                    <span>Customer Service</span>
+                </a>
+
                 @if(Auth::user()->role === 'super_admin')
                 <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 rounded-lg bg-white/10 px-4 py-3 text-white hover:bg-white/20 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -91,108 +98,44 @@
                 </div>
                 @endif
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Form Tambah User -->
-                    <div class="lg:col-span-1">
-                        <div class="bg-white rounded-lg shadow-md p-6">
-                            <h3 class="text-lg font-bold text-gray-900 mb-6">Tambah Admin Baru</h3>
-                            <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-4">
-                                @csrf
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
-                                    <input type="text" name="name" required value="{{ old('name') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                                    @error('name') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                                    <input type="email" name="email" required value="{{ old('email') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                                    @error('email') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                                    <input type="password" name="password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                                    @error('password') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password</label>
-                                    <input type="password" name="password_confirmation" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Peran</label>
-                                    <select name="role" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                                        <option value="">-- Pilih Peran --</option>
-                                        <option value="admin">Admin</option>
-                                        <option value="super_admin">Super Admin</option>
-                                    </select>
-                                    @error('role') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
-                                </div>
-                                <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium">
-                                    Tambah User
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Daftar User -->
-                    <div class="lg:col-span-2">
-                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                            <div class="border-b border-gray-200 px-8 py-6 flex items-center justify-between">
-                                <h2 class="text-2xl font-bold text-gray-900">Daftar Admin</h2>
-                                <div class="text-right">
-                                    <p class="text-sm text-gray-600">Total Admin</p>
-                                    <p class="text-3xl font-bold text-indigo-600">{{ count($users) }}</p>
-                                </div>
+                <!-- Form Tambah User -->
+                <div class="max-w-lg">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-6">Tambah Admin Baru</h3>
+                        <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-4">
+                            @csrf
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
+                                <input type="text" name="name" required value="{{ old('name') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                @error('name') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
                             </div>
-
-                            <div class="overflow-x-auto">
-                                <table class="w-full">
-                                    <thead class="bg-gray-50 border-b border-gray-200">
-                                        <tr>
-                                            <th class="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Nama</th>
-                                            <th class="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Email</th>
-                                            <th class="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Peran</th>
-                                            <th class="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-200">
-                                        @forelse($users as $user)
-                                        <tr class="hover:bg-gray-50 transition">
-                                            <td class="px-8 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                {{ $user->name }}
-                                                @if($user->id === Auth::id()) <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Anda</span> @endif
-                                            </td>
-                                            <td class="px-8 py-4 whitespace-nowrap text-sm text-gray-600">
-                                                {{ $user->email }}
-                                            </td>
-                                            <td class="px-8 py-4 whitespace-nowrap">
-                                                <span class="px-3 py-1 rounded-full text-xs font-semibold
-                                                    @if($user->role === 'super_admin') bg-purple-100 text-purple-800
-                                                    @else bg-blue-100 text-blue-800
-                                                    @endif">
-                                                    {{ ucfirst($user->role) }}
-                                                </span>
-                                            </td>
-                                            <td class="px-8 py-4 whitespace-nowrap text-sm space-x-2">
-                                                @if($user->id !== Auth::id())
-                                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin hapus user ini?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-800 transition">Hapus</button>
-                                                </form>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        @empty
-                                        <tr>
-                                            <td colspan="4" class="px-8 py-12 text-center text-gray-500">
-                                                Tidak ada admin terdaftar
-                                            </td>
-                                        </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" name="email" required value="{{ old('email') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                @error('email') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
                             </div>
-                        </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                <input type="password" name="password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                @error('password') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password</label>
+                                <input type="password" name="password_confirmation" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Peran</label>
+                                <select name="role" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                    <option value="">-- Pilih Peran --</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="super_admin">Super Admin</option>
+                                </select>
+                                @error('role') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+                            <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium">
+                                Tambah User
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

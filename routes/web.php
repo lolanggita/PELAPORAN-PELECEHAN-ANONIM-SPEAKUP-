@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/admin/chat/messages/{id}', [ChatController::class, 'deleteMessage'])->name('admin.chat.deleteMessage');
     Route::delete('/admin/chat/sessions/{session_id}', [ChatController::class, 'deleteSession'])->name('admin.chat.deleteSession');
     Route::patch('/admin/reports/{id}/status', [AdminReportController::class, 'updateStatus'])->name('admin.reports.updateStatus');
+    Route::put('/admin/reports/{id}/notes', [AdminReportController::class, 'saveNote'])->name('admin.reports.saveNote');
+    Route::delete('/admin/reports/{id}/notes', [AdminReportController::class, 'deleteNote'])->name('admin.reports.deleteNote');
     Route::delete('/admin/reports/{id}', [AdminReportController::class, 'destroy'])->name('admin.reports.destroy');
     Route::get('/admin/reports/{id}/detail', [AdminReportController::class, 'detail'])->name('admin.reports.detail');
 });
@@ -43,5 +45,4 @@ Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.se
 Route::middleware('auth')->group(function () {
     Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users.index')->middleware('role:super_admin');
     Route::post('/admin/users', [AdminUserController::class, 'store'])->name('admin.users.store')->middleware('role:super_admin');
-    Route::delete('/admin/users/{id}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy')->middleware('role:super_admin');
 });

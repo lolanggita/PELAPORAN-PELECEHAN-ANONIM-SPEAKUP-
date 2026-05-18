@@ -10,12 +10,11 @@ use Illuminate\Validation\Rule;
 class AdminUserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the user management page.
      */
     public function index()
     {
-        $users = User::whereIn('role', ['admin', 'super_admin'])->orderBy('created_at', 'desc')->get();
-        return view('admin.users.index', compact('users'));
+        return view('admin.users.index');
     }
 
     /**
@@ -38,16 +37,5 @@ class AdminUserController extends Controller
         ]);
 
         return redirect()->route('admin.users.index')->with('success', 'Admin berhasil ditambahkan.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $user = User::findOrFail($id);
-        $user->delete();
-
-        return redirect()->route('admin.users.index')->with('success', 'Admin berhasil dihapus.');
     }
 }
