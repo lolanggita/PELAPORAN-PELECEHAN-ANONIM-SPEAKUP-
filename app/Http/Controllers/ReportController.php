@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bukti;
+use App\Models\KategoriKejadian;
 use App\Models\Laporan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -12,7 +13,8 @@ class ReportController extends Controller
 {
     public function create()
     {
-        return view('lapor');
+        $kategoris = KategoriKejadian::where('is_active', true)->orderBy('nama_kategori')->get();
+        return view('lapor', compact('kategoris'));
     }
 
     public function showTrackForm()

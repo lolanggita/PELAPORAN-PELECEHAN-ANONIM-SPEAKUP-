@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminKategoriController;
 use App\Http\Controllers\AdminReportController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\ChatController;
@@ -34,6 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/admin/reports/{id}/status', [AdminReportController::class, 'updateStatus'])->name('admin.reports.updateStatus');
     Route::delete('/admin/reports/{id}', [AdminReportController::class, 'destroy'])->name('admin.reports.destroy');
     Route::get('/admin/reports/{id}/detail', [AdminReportController::class, 'detail'])->name('admin.reports.detail');
+
+    // Kategori Jenis Kejadian
+    Route::get('/admin/kategori/create', [AdminKategoriController::class, 'create'])->name('admin.kategori.create');
+    Route::post('/admin/kategori', [AdminKategoriController::class, 'store'])->name('admin.kategori.store');
 });
 
 Route::get('/chat/messages', [ChatController::class, 'getMessages'])->name('chat.getMessages');
