@@ -10,11 +10,12 @@ use Illuminate\Validation\Rule;
 class AdminUserController extends Controller
 {
     /**
-     * Display the user management page.
+     * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admin.users.index');
+        $users = User::whereIn('role', ['admin', 'super_admin'])->orderBy('created_at', 'desc')->get();
+        return view('admin.users.index', compact('users'));
     }
 
     /**
