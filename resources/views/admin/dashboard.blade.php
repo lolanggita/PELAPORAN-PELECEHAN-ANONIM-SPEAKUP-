@@ -93,7 +93,6 @@
                             <tbody class="divide-y divide-gray-200">
                                 @forelse($laporans as $laporan)
                                 <tr class="hover:bg-gray-50 transition">
-                                    
                                     <td class="px-8 py-4 whitespace-nowrap">
                                         <span class="text-sm font-medium text-indigo-600">
                                             {{ $laporan->kode_tracking }}
@@ -147,24 +146,20 @@
 
                                     <td class="px-8 py-4 whitespace-nowrap text-sm">
                                         <div class="flex items-center gap-2">
-
                                             <!-- Edit Notes -->
                                             <button type="button"
                                                 onclick="openNoteModal({{ $laporan->id_laporan }}, @json($laporan->notes))"
                                                 class="text-yellow-600 hover:text-yellow-900 transition"
                                                 title="Edit Notes">
-
                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                     class="h-5 w-5"
                                                     fill="none"
                                                     viewBox="0 0 24 24"
                                                     stroke="currentColor">
-
                                                     <path stroke-linecap="round"
                                                         stroke-linejoin="round"
                                                         stroke-width="2"
                                                         d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3z"/>
-
                                                     <path stroke-linecap="round"
                                                         stroke-linejoin="round"
                                                         stroke-width="2"
@@ -172,19 +167,35 @@
                                                 </svg>
                                             </button>
 
+                                            <!-- View Detail -->
+                                            <button type="button"
+                                                onclick="showDetail({{ $laporan->id_laporan }})"
+                                                class="text-indigo-600 hover:text-indigo-900 transition"
+                                                title="Lihat Detail">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-5 w-5"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </button>
                                         </div>
                                     </td>
-
                                 </tr>
-
                                 @empty
-
                                 <tr>
                                     <td colspan="6" class="px-8 py-12 text-center text-gray-500">
                                         Tidak ada laporan masuk
                                     </td>
                                 </tr>
-
                                 @endforelse
                             </tbody>
                         </table>
@@ -194,11 +205,68 @@
         </main>
     </div>
 
+    <!-- Detail Modal -->
+    <div id="detailModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4">
+            <div class="px-8 py-6 border-b border-gray-200 flex items-center justify-between">
+                <h3 class="text-xl font-bold text-gray-900">Detail Laporan</h3>
+                <button type="button" onclick="closeDetail()" class="text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="px-8 py-6 space-y-4 max-h-96 overflow-y-auto">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-600">ID Laporan</p>
+                        <p id="detailId" class="text-lg font-semibold text-gray-900"></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Status</p>
+                        <p id="detailStatus" class="text-lg font-semibold"></p>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Jenis Kejadian</p>
+                    <p id="detailJenis" class="text-base text-gray-900 font-medium"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Lokasi</p>
+                    <p id="detailLokasi" class="text-base text-gray-900 font-medium"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Tanggal Kejadian</p>
+                    <p id="detailTanggal" class="text-base text-gray-900 font-medium"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Deskripsi</p>
+                    <p id="detailDeskripsi" class="text-base text-gray-900 bg-gray-50 p-3 rounded-lg whitespace-pre-wrap"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Nomor Telepon</p>
+                    <p id="detailPhone" class="text-base text-gray-900 font-medium"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Catatan</p>
+                    <p id="detailNotes" class="text-base text-gray-900 bg-gray-50 p-3 rounded-lg whitespace-pre-wrap">Tidak ada catatan</p>
+                </div>
+                <div id="detailBukti" class="hidden">
+                    <p class="text-sm text-gray-600">Bukti</p>
+                    <div id="buktiContainer" class="grid grid-cols-1 gap-2"></div>
+                </div>
+            </div>
+            <div class="px-8 py-4 border-t border-gray-200 flex justify-end">
+                <button type="button" onclick="closeDetail()" class="px-4 py-2 bg-gray-300 text-gray-900 rounded-lg hover:bg-gray-400 transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Note Modal -->
     <div id="noteModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-
         <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4">
-
             <div class="px-8 py-6 border-b border-gray-200 flex items-center justify-between">
                 <h3 class="text-xl font-bold text-gray-900">
                     Catatan / Alasan Penolakan
@@ -207,13 +275,11 @@
                 <button type="button"
                     onclick="closeNoteModal()"
                     class="text-gray-500 hover:text-gray-700">
-
                     <svg xmlns="http://www.w3.org/2000/svg"
                         class="h-6 w-6"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor">
-
                         <path stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width="2"
@@ -223,7 +289,6 @@
             </div>
 
             <form id="noteForm" method="POST" class="px-8 py-6 space-y-4">
-
                 @csrf
                 @method('PUT')
 
@@ -241,29 +306,23 @@
                 </div>
 
                 <div class="flex items-center justify-between gap-4">
-
                     <button type="button"
                         onclick="deleteNote()"
                         class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
-
                         Hapus Catatan
                     </button>
 
                     <div class="flex gap-2">
-
                         <button type="button"
                             onclick="closeNoteModal()"
                             class="px-4 py-2 bg-gray-300 text-gray-900 rounded-lg hover:bg-gray-400 transition">
-
                             Batal
                         </button>
 
                         <button type="submit"
                             class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
-
                             Simpan Catatan
                         </button>
-
                     </div>
                 </div>
             </form>
@@ -271,41 +330,91 @@
     </div>
 
     <script>
+        // Get CSRF token helper
+        function getCsrfToken() {
+            return document.querySelector('meta[name="csrf-token"]')?.content || 
+                   document.querySelector('input[name="_token"]')?.value;
+        }
 
+        // Detail Modal Functions
+        function showDetail(id) {
+            fetch(`/admin/reports/${id}/detail`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('detailId').textContent = data.kode_tracking;
+                    document.getElementById('detailJenis').textContent = data.jenis_kejadian;
+                    document.getElementById('detailLokasi').textContent = data.lokasi;
+                    document.getElementById('detailDeskripsi').textContent = data.deskripsi;
+                    document.getElementById('detailTanggal').textContent = new Date(data.tanggal_kejadian).toLocaleString('id-ID');
+                    document.getElementById('detailPhone').textContent = data.phone || 'Tidak disediakan';
+                    document.getElementById('detailNotes').textContent = data.notes || 'Tidak ada catatan';
+                    
+                    let statusColor = 'bg-gray-100 text-gray-800';
+                    if (data.status === 'Menunggu Verifikasi') statusColor = 'bg-yellow-100 text-yellow-800';
+                    else if (data.status === 'Diproses') statusColor = 'bg-blue-100 text-blue-800';
+                    else if (data.status === 'Selesai') statusColor = 'bg-green-100 text-green-800';
+                    else if (data.status === 'Ditolak') statusColor = 'bg-red-100 text-red-800';
+                    
+                    document.getElementById('detailStatus').innerHTML = `<span class="px-3 py-1 rounded-full text-xs font-semibold ${statusColor}">${data.status}</span>`;
+                    
+                    // Tampilkan bukti
+                    const buktiContainer = document.getElementById('buktiContainer');
+                    buktiContainer.innerHTML = '';
+                    if (data.buktis && data.buktis.length > 0) {
+                        document.getElementById('detailBukti').classList.remove('hidden');
+                        data.buktis.forEach(bukti => {
+                            const img = document.createElement('img');
+                            img.src = `/storage/${bukti.file_bukti}`;
+                            img.className = 'max-w-full h-auto rounded-lg shadow-md';
+                            img.alt = 'Bukti laporan';
+                            buktiContainer.appendChild(img);
+                        });
+                    } else {
+                        document.getElementById('detailBukti').classList.add('hidden');
+                    }
+                    
+                    document.getElementById('detailModal').classList.remove('hidden');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Gagal memuat detail laporan');
+                });
+        }
+
+        function closeDetail() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        // Note Modal Functions
         function openNoteModal(id, notes) {
-
             const noteForm = document.getElementById('noteForm');
-
             noteForm.action = `/admin/reports/${id}/notes`;
-
             document.getElementById('notes').value = notes || '';
-
             noteForm.dataset.reportId = id;
-
             document.getElementById('noteModal').classList.remove('hidden');
         }
 
         function closeNoteModal() {
-
             document.getElementById('noteModal').classList.add('hidden');
         }
 
         function deleteNote() {
-
             if (!confirm('Apakah Anda yakin ingin menghapus catatan ini?')) {
                 return;
             }
 
             const form = document.getElementById('noteForm');
+            const reportId = form.dataset.reportId;
+            
+            if (!reportId) {
+                alert('Error: ID laporan tidak ditemukan');
+                return;
+            }
 
-            const csrfToken =
-                document.querySelector('meta[name="csrf-token"]')?.content ||
-                document.querySelector('input[name="_token"]')?.value;
-
+            const csrfToken = getCsrfToken();
             const deleteForm = document.createElement('form');
-
             deleteForm.method = 'POST';
-            deleteForm.action = form.action;
+            deleteForm.action = `/admin/reports/${reportId}/notes`;
 
             deleteForm.innerHTML = `
                 <input type="hidden" name="_token" value="${csrfToken}">
@@ -313,15 +422,23 @@
             `;
 
             document.body.appendChild(deleteForm);
-
             deleteForm.submit();
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-
-            document.getElementById('noteModal')?.classList.add('hidden');
+        // Click outside modal to close
+        document.getElementById('detailModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeDetail();
         });
 
+        document.getElementById('noteModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeNoteModal();
+        });
+
+        // Auto-hide modals after page refresh
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('noteModal')?.classList.add('hidden');
+            document.getElementById('detailModal')?.classList.add('hidden');
+        });
     </script>
 </body>
 </html>
