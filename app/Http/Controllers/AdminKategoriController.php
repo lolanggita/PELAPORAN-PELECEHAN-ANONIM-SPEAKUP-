@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 class AdminKategoriController extends Controller
 {
     /**
+     * Tampilkan daftar semua kategori kejadian.
+     */
+    public function index()
+    {
+        $kategoris = KategoriKejadian::orderBy('created_at', 'desc')->paginate(10);
+        return view('admin.kategori.index', compact('kategoris'));
+    }
+
+    /**
      * Tampilkan form create kategori kejadian.
      */
     public function create()
@@ -37,7 +46,7 @@ class AdminKategoriController extends Controller
             'is_active'     => $request->has('is_active') ? true : false,
         ]);
 
-        return redirect()->route('admin.kategori.create')
+        return redirect()->route('admin.kategori.index')
             ->with('success', 'Kategori "' . $request->nama_kategori . '" berhasil ditambahkan!');
     }
 }

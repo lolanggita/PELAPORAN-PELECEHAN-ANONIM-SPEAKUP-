@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/reports/{id}/detail', [AdminReportController::class, 'detail'])->name('admin.reports.detail');
 
     // Kategori Jenis Kejadian
+    Route::get('/admin/kategori', [AdminKategoriController::class, 'index'])->name('admin.kategori.index');
     Route::get('/admin/kategori/create', [AdminKategoriController::class, 'create'])->name('admin.kategori.create');
     Route::post('/admin/kategori', [AdminKategoriController::class, 'store'])->name('admin.kategori.store');
 });
